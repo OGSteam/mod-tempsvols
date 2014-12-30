@@ -52,7 +52,7 @@ var data2 = Array(
 	Array(205, 2, 15000, 0, 300, 800),    //KRZ
 	Array(206, 3, 10000, 0, 500, 1500),   //SS
 	Array(207, 2, 2500, 0, 1000, 7500),   //KS
-	Array(208, 1, 2000, 0, 300, 20000),   //REC
+	Array(208, 1, 2000, 4000, 300, 20000),   //REC
 	Array(209, 1, 100000000, 0, 1, 0),    //Spio
 	Array(211, 2, 4000, 5000, 1000, 500), //Bomber
 	Array(212, 3, 5000, 0, 1000, 2000),   //Zer
@@ -129,6 +129,10 @@ function berechne_table(id) {
 			if (data2[i][3] != 0) {//-exceptions-
 				if ((data2[i][0] == 201) && (antrieb[1] > 4)) spd = data2[i][3] * (1 + antrieb[1] * 2 / 10); //kt neu
 				if ((data2[i][0] == 211) && (antrieb[2] > 7)) spd = data2[i][3] * (1 + antrieb[2] * 3 / 10); //bomber neu
+				if (data2[i][0] == 208) {
+					if (antrieb[1] > 16) spd = data2[i][3] * (1 + antrieb[1] * 2 / 10); //rec neu imp
+					if (antrieb[2] > 14) spd = data2[i][3] * 1.5 * (1 + antrieb[2] * 3 / 10); //rec neu hyp
+				}	
 			}
 			document.getElementById('s' + data2[i][0]).firstChild.nodeValue = pc(Math.round(spd));
 			document.getElementById('l' + data2[i][0]).firstChild.nodeValue = pc(data2[i][5] * document.getElementById('i' + data2[i][0]).value);
@@ -266,7 +270,14 @@ function berechne() {
 		if (num != 0) {
 			shipspd = retint(document.getElementById('s'+data2[i][0]).firstChild.nodeValue);
 			spd2 = 35000 / ( time1 - 10 ) * Math.sqrt( enf * 10 / shipspd );
-			verbrauch = num * (data2[i][4] + (data2[i][0] == 201 && document.getElementById('imp').value > 4 ? 10 : 0));
+	      
+			basisverbrauch = data2[i][4];
+      
+			if (data2[i][0] == 201 && document.getElementById('imp').value > 4) basisverbrauch = basisverbrauch * 2;
+			if (data2[i][0] == 208 && document.getElementById('ha').value > 14) basisverbrauch = basisverbrauch * 3;
+			else if (data2[i][0] == 208 && document.getElementById('imp').value > 16) basisverbrauch = basisverbrauch * 2;
+      
+			verbrauch = num * basisverbrauch;
 			gesverbrauch += verbrauch * enf / 35000 * Math.pow(spd2 / 10 + 1 , 2);
 		}
 	}
