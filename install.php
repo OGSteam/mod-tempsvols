@@ -11,11 +11,9 @@ if (!defined('IN_SPYOGAME')) {
     die("Hacking attempt");
 }
 
-global $db;
-
 $is_ok = false;
 $mod_folder = "tempsvols";
-$is_ok = install_mod ($mod_folder);
+$is_ok = install_mod($mod_folder);
 if ($is_ok == true)
 	{
 		// Si besoin de creer des tables, à faire ici
