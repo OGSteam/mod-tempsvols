@@ -492,10 +492,19 @@ function duration(timex) {
 	return th + ':' + tm + ':' + ts
 }
 
+function addZero(i) {
+    if (i < 10) {
+        i = "0" + i;
+    }
+    return i;
+}
+
 function newdate(timestamp){
-	var ladate = new Date();
-	ladate.setTime(timestamp);
-	var retour = ladate.getDate()+'/'+(ladate.getMonth()+1)+"/"+ladate.getFullYear()+" "+ladate.getHours()+":"+ladate.getMinutes()+":"+ladate.getSeconds();
+	var d = new Date();
+    
+	d.setTime(timestamp);
+	var retour = addZero(d.getDate())+'/'+addZero((d.getMonth()+1))+"/"+d.getFullYear()+" "+
+                 addZero(d.getHours())+":"+addZero(d.getMinutes())+":"+addZero(d.getSeconds());
 	return retour;
 }	
 
