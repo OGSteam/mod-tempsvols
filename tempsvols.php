@@ -45,16 +45,16 @@
     <tr>
      <th>D&eacute;part</th>
      <th style="width:225px;">
-      <input id="st_gal" type="text" maxlength="3" value="1" style="width:40px;" onblur="chkval1(this);" onkeyup="chkint(this);berechne();" />
-      <input id="st_sys" type="text" maxlength="4" value="1" style="width:40px;" onblur="chkval1(this);" onkeyup="chkint(this);berechne();" />
-      <input id="st_pla" type="text" maxlength="3" value="1" style="width:40px;" onblur="chkval1(this);" onkeyup="chkint(this);berechne();" /></th>
+      <input id="st_gal" type="text" maxlength="3" value="1" style="width:40px;" onblur="checkVal1(this);" onkeyup="checkInt(this);berechne();" />
+      <input id="st_sys" type="text" maxlength="4" value="1" style="width:40px;" onblur="checkVal1(this);" onkeyup="checkInt(this);berechne();" />
+      <input id="st_pla" type="text" maxlength="3" value="1" style="width:40px;" onblur="checkVal1(this);" onkeyup="checkInt(this);berechne();" /></th>
     </tr>
     <tr>
      <th>Objectif</th>
      <th>
-      <input id="ar_gal" type="text" maxlength="2" value="1" style="width:40px;" onblur="chkval1(this);" onkeyup="chkint(this);berechne();" />
-      <input id="ar_sys" type="text" maxlength="4" value="1" style="width:40px;" onblur="chkval1(this);" onkeyup="chkint(this);berechne();" />
-      <input id="ar_pla" type="text" maxlength="3" value="1" style="width:40px;" onblur="chkval1(this);" onkeyup="chkint(this);berechne();" />
+      <input id="ar_gal" type="text" maxlength="2" value="1" style="width:40px;" onblur="checkVal1(this);" onkeyup="checkInt(this);berechne();" />
+      <input id="ar_sys" type="text" maxlength="4" value="1" style="width:40px;" onblur="checkVal1(this);" onkeyup="checkInt(this);berechne();" />
+      <input id="ar_pla" type="text" maxlength="3" value="1" style="width:40px;" onblur="checkVal1(this);" onkeyup="checkInt(this);berechne();" />
       <select id="sel" onchange="berechne()">
        <option value="planet">Plan&egrave;te</option>
        <option value="tf">D&eacute;bris</option>
@@ -86,7 +86,7 @@
     </tr>
     <tr>
      <th>Consommation de carburant</th>
-     <th><span id="verbrauch">-</span></th>
+     <th><span id="conso">-</span></th>
     </tr>
    </table>
   </td>
@@ -108,17 +108,17 @@
     <tr>
      <th style="width:150px;">R&eacute;acteur &agrave; combustion</th>
      <th>
-      <input id="vbt" maxlength="2" type="text" value="<?PHP echo $pub_RC?>" style="width:75px;" onblur="chkval(this);" onkeyup="chkint(this);berechne_table('-1')"></th>
+      <input id="combus" maxlength="2" type="text" value="<?PHP echo $pub_RC?>" style="width:75px;" onblur="checkVal(this);" onkeyup="checkInt(this);berechne_table('-1')"></th>
     </tr>
     <tr>
      <th style="width:150px;">R&eacute;acteur &agrave; impulsion</th>
      <th>
-      <input id="imp" maxlength="2" type="text" value="<?PHP echo $pub_RI?>" style="width:75px;" onblur="chkval(this);" onkeyup="chkint(this);berechne_table('-1')"></th>
+      <input id="imp" maxlength="2" type="text" value="<?PHP echo $pub_RI?>" style="width:75px;" onblur="checkVal(this);" onkeyup="checkInt(this);berechne_table('-1')"></th>
     </tr>
     <tr>
      <th style="width:150px;">Propulsion Hyperespace</th>
      <th>
-      <input id="ha" maxlength="2" type="text" value="<?PHP echo $pub_PH?>" style="width:75px;" onblur="chkval(this);" onkeyup="chkint(this);berechne_table('-1')"></th>
+      <input id="hyper" maxlength="2" type="text" value="<?PHP echo $pub_PH?>" style="width:75px;" onblur="checkVal(this);" onkeyup="checkInt(this);berechne_table('-1')"></th>
     </tr>
    </table>
   </td>
@@ -128,21 +128,21 @@
 <table style="border:0px; border-collapse:separate; border-spacing:1px; padding:1px; text-align:center;">
  <tr>
   <th style="width:150px;">Heure de d&eacute;part</th>
-  <th style="width:125px;"><input id="heure_depart1" maxlength="19" type="text" value="<?PHP echo date('d/m/Y H:i:j');?>" onblur="chkval(this);" onkeyup="berechne_table('-1')" /></th>
+  <th style="width:125px;"><input id="heure_depart1" maxlength="19" type="text" value="<?PHP echo date('d/m/Y H:i:j');?>" onblur="checkVal(this);" onkeyup="berechne_table('-1')" /></th>
   <th style="width:125px;"><span id="heure_depart2">-</span></th>
   <th style="width:125px;"><span id="heure_depart3">-</span></th>
  </tr>
  <tr>
   <th>Heure d&rsquo;arriv&eacute;e</th>
    <th><span id="heure_arrive1">-</span></th>
-   <th><input id="heure_arrive2" maxlength="19" type="text" value="<?PHP echo date('d/m/Y H:i:j');?>" onblur="chkval(this);" onkeyup="berechne_table('-1')" /></th>
+   <th><input id="heure_arrive2" maxlength="19" type="text" value="<?PHP echo date('d/m/Y H:i:j');?>" onblur="checkVal(this);" onkeyup="berechne_table('-1')" /></th>
    <th><span id="heure_arrive3">-</span></th>
  </tr>
  <tr>
   <th> Heure de retour</th>
   <th><span id="heure_retour1">-</span></th>
   <th><span id="heure_retour2">-</span></th>
-  <th><input id="heure_retour3" maxlength="19" type="text" value="<?PHP echo date('d/m/Y H:i:j');?>" onblur="chkval(this);" onkeyup="berechne_table('-1')" /></th>
+  <th><input id="heure_retour3" maxlength="19" type="text" value="<?PHP echo date('d/m/Y H:i:j');?>" onblur="checkVal(this);" onkeyup="berechne_table('-1')" /></th>
  </tr>
 </table>
 <br />
@@ -155,81 +155,81 @@
  </tr>
  <tr>
   <th>Petit transporteur</th>
-  <th><input class="n" id="i201" maxlength="6" type="text" value="0" style="width:75px;" onblur="chkval(this);" onkeyup="chkint(this);berechne_table('201')" /></th>
+  <th><input class="n" id="i201" maxlength="6" type="text" value="0" style="width:75px;" onblur="checkVal(this);" onkeyup="checkInt(this);berechne_table('201')" /></th>
   <th><span id="l201">0</span></th>
   <th><span id="s201">5.000</span></th>
  </tr>
  <tr>
   <th>Grand transporteur</th>
-   <th><input class="n" id="i202" maxlength="6" type="text" value="0" style="width:75px;" onblur="chkval(this);" onkeyup="chkint(this);berechne_table('202')" /></th>
+   <th><input class="n" id="i202" maxlength="6" type="text" value="0" style="width:75px;" onblur="checkVal(this);" onkeyup="checkInt(this);berechne_table('202')" /></th>
    <th><span id="l202">0</span></th>
    <th><span id="s202">7.500</span></th>
  </tr>
  <tr>
   <th>Chasseur l&eacute;ger</th>
-  <th><input class="n" id="i203" maxlength="6" type="text" value="0" style="width:75px;" onblur="chkval(this);" onkeyup="chkint(this);berechne_table('203')" /></th>
+  <th><input class="n" id="i203" maxlength="6" type="text" value="0" style="width:75px;" onblur="checkVal(this);" onkeyup="checkInt(this);berechne_table('203')" /></th>
   <th><span id="l203">0</span></th>
   <th><span id="s203">12.500</span></th>
  </tr>
  <tr>
   <th>Chasseur lourd</th>
-  <th><input class="n" id="i204" maxlength="6" type="text" value="0" style="width:75px;" onblur="chkval(this);" onkeyup="chkint(this);berechne_table('204')" /></th>
+  <th><input class="n" id="i204" maxlength="6" type="text" value="0" style="width:75px;" onblur="checkVal(this);" onkeyup="checkInt(this);berechne_table('204')" /></th>
   <th><span id="l204">0</span></th>
   <th><span id="s204">10.000</span></th>
  </tr>
  <tr>
   <th>Croiseur</th>
-  <th><input class="n" id="i205" maxlength="6" type="text" value="0" style="width:75px;" onblur="chkval(this);" onkeyup="chkint(this);berechne_table('205')" /></th>
+  <th><input class="n" id="i205" maxlength="6" type="text" value="0" style="width:75px;" onblur="checkVal(this);" onkeyup="checkInt(this);berechne_table('205')" /></th>
   <th><span id="l205">0</span></th>
   <th><span id="s205">15.000</span></th>
  </tr>
  <tr>
   <th>Vaisseau de bataille</th>
-  <th><input class="n" id="i206" maxlength="6" type="text" value="0" style="width:75px;" onblur="chkval(this);" onkeyup="chkint(this);berechne_table('206')" /></th>
+  <th><input class="n" id="i206" maxlength="6" type="text" value="0" style="width:75px;" onblur="checkVal(this);" onkeyup="checkInt(this);berechne_table('206')" /></th>
   <th><span id="l206">0</span></th>
   <th><span id="s206">10.000</span></th>
  </tr>
  <tr>
   <th>Vaisseau de colonisation</th>
-  <th><input class="n" id="i207" maxlength="6" type="text" value="0" style="width:75px;" onblur="chkval(this);" onkeyup="chkint(this);berechne_table('207')" /></th>
+  <th><input class="n" id="i207" maxlength="6" type="text" value="0" style="width:75px;" onblur="checkVal(this);" onkeyup="checkInt(this);berechne_table('207')" /></th>
   <th><span id="l207">0</span></th>
   <th><span id="s207">2.500</span></th>
  </tr>
  <tr>
   <th>Recycleur</th>
-  <th><input class="n" id="i208" maxlength="6" type="text" value="0" style="width:75px;" onblur="chkval(this);" onkeyup="chkint(this);berechne_table('208')" /></th>
+  <th><input class="n" id="i208" maxlength="6" type="text" value="0" style="width:75px;" onblur="checkVal(this);" onkeyup="checkInt(this);berechne_table('208')" /></th>
   <th><span id="l208">0</span></th>
   <th><span id="s208">2.000</span></th>
  </tr>
  <tr>
   <th>Sonde espionnage</th>
-  <th><input class="n" id="i209" maxlength="6" type="text" value="0" style="width:75px;" onblur="chkval(this);" onkeyup="chkint(this);berechne_table('209')" /></th>
+  <th><input class="n" id="i209" maxlength="6" type="text" value="0" style="width:75px;" onblur="checkVal(this);" onkeyup="checkInt(this);berechne_table('209')" /></th>
   <th><span id="l209">0</span></th>
   <th><span id="s209">100.000.000</span></th>
  </tr>
  <tr>
   <th>Bombardier</th>
-  <th><input class="n" id="i211" maxlength="6" type="text" value="0" style="width:75px;" onblur="chkval(this);" onkeyup="chkint(this);berechne_table('211')" /></th>
+  <th><input class="n" id="i211" maxlength="6" type="text" value="0" style="width:75px;" onblur="checkVal(this);" onkeyup="checkInt(this);berechne_table('211')" /></th>
   <th><span id="l211">0</span></th>
   <th><span id="s211">4.000</span></th>
  </tr>
  <tr>
   <th>Destructeur</th>
-  <th><input class="n" id="i212" maxlength="6" type="text" value="0" style="width:75px;" onblur="chkval(this);" onkeyup="chkint(this);berechne_table('212')" /></th>
+  <th><input class="n" id="i212" maxlength="6" type="text" value="0" style="width:75px;" onblur="checkVal(this);" onkeyup="checkInt(this);berechne_table('212')" /></th>
   <th><span id="l212">0</span></th>
   <th><span id="s212">5.000</span></th>
  </tr>
  <tr>
   <th>&Eacute;toile de la mort</th>
-  <th><input class="n" id="i213" maxlength="6" type="text" value="0" style="width:75px;" onblur="chkval(this);" onkeyup="chkint(this);berechne_table('213')" /></th>
+  <th><input class="n" id="i213" maxlength="6" type="text" value="0" style="width:75px;" onblur="checkVal(this);" onkeyup="checkInt(this);berechne_table('213')" /></th>
   <th><span id="l213">0</span></th>
   <th><span id="s213">100</span></th>
  </tr>
  <tr>
   <th>Traqueur</th>
-  <th><input class="n" id="i214" maxlength="6" type="text" value="0" style="width:75px;" onblur="chkval(this);" onkeyup="chkint(this);berechne_table('214')" /></th>
+  <th><input class="n" id="i214" maxlength="6" type="text" value="0" style="width:75px;" onblur="checkVal(this);" onkeyup="checkInt(this);berechne_table('214')" /></th>
   <th><span id="l214">0</span></th>
-  <th><span id="s214">100</span></th>
+  <th><span id="s214">10.000</span></th>
  </tr>
  <tr class="space"><th colspan="4"></th></tr>
  <tr>
@@ -246,43 +246,33 @@
 <script type="text/javascript">
 var speeduni = '<?php echo $server_config['speed_uni'];?>';
 var data2 = Array(
-	//typ,ant,speed,speed2,verbr,lager)
-	//    0  , 1, 2   , 3    , 4 , 5      )
-	Array(201, 1, 5000, 10000, 10, 5000), //KT
-	Array(202, 1, 7500, 0, 50, 25000),    //GT
-	Array(203, 1, 12500, 0, 20, 50),      //LJ
-	Array(204, 2, 10000, 0, 75, 100),     //SJ
-	Array(205, 2, 15000, 0, 300, 800),    //KRZ
-	Array(206, 3, 10000, 0, 500, 1500),   //SS
-	Array(207, 2, 2500, 0, 1000, 7500),   //KS
-	Array(208, 1, 2000, 4000, 300, 20000),   //REC
-	Array(209, 1, 100000000, 0, 1, 0),    //Spio
-	Array(211, 2, 4000, 5000, 1000, 500), //Bomber
-	Array(212, 3, 5000, 0, 1000, 2000),   //Zer
-  Array(213, 3, 100, 0, 1, 1000000),     //TS 
-	Array(214, 3, 10000, 0, 250, 750)     //TR
+	//type,techno,v_base   ,speed2,conso, fret)
+	//    0  , 1, 2        , 3    , 4   , 5   )
+	Array(201, 1, 5000     , 10000, 10  , 5000),    //PT  (Petit transporteur)
+	Array(202, 1, 7500     , 0    , 50  , 25000),   //GT  (Grand transporteur)
+	Array(203, 1, 12500    , 0    , 20  , 50),      //cl  (Chasseur léger)
+	Array(204, 2, 10000    , 0    , 75  , 100),     //CL  (Chasseur lourd)
+	Array(205, 2, 15000    , 0    , 300 , 800),     //Cr  (Croiseur)
+	Array(206, 3, 10000    , 0    , 500 , 1500),    //VB  (Vaisseau de bataille)
+	Array(207, 2, 2500     , 0    , 1000, 7500),    //VC  (Vaisseau de colonisation)
+	Array(208, 1, 2000     , 4000 , 300 , 20000),   //REC (Recycleur)
+	Array(209, 1, 100000000, 0    , 1   , 5),       //Sonde
+	Array(211, 2, 4000     , 5000 , 1000, 500),     //Bom (Bombardier)
+	Array(212, 3, 5000     , 0    , 1000, 2000),    //Des (Destructeur)
+    Array(213, 3, 100      , 0    , 1   , 1000000), //RIP (Étoile de la mort) 
+	Array(214, 3, 10000    , 0    , 250 , 750)      //TR  (Traqueur)
 );
-
-function dist() {
-	return 5;
-}
-function speed() {
-	return 18000;
-}
 
 function div(a, b) {
 	return Math.floor(a / b);
 }
 
 function mod(a, b) {
-	return a - Math.floor(a / b) * b; // YEAH ^^
+	return a - Math.floor(a / b) * b;
 }
 
-function pc(s1) {
-	return pointconvert(s1);
-}
-
-function pointconvert(s) {
+//Convertion nombre pour affichage avec séparateur des milliers
+function pc(s) {
 	var sx = '';
 	s = s + '';
 	for (ipc = s.length; ipc >= 0; ipc--) {
@@ -297,23 +287,23 @@ function retint(s) {
 	s = s + '';
 	var sx = s.toUpperCase();
 	for(ir = 0; ir < sx.length; ir++) {
-	if(sx.charCodeAt(ir) >= 48 && sx.charCodeAt(ir) <= 57) {
+        if(sx.charCodeAt(ir) >= 48 && sx.charCodeAt(ir) <= 57) {
 			sxx = sxx + sx.charAt(ir);
 		}
 	}
 	return sxx;
 }
 
-function chkint(id) {
+function checkInt(id) {
 	if(id.value != retint(id.value)) {
 		id.value = retint(id.value);
 	}
 }
 
-function chkval(id) {
+function checkVal(id) {
 	if (id.value == '') id.value = '0';
 }
-function chkval1(id) {
+function checkVal1(id) {
 	if (id.value == '') id.value = '1';
 }
 
@@ -321,23 +311,22 @@ function berechne_table(id) {
 	//alert(id);
 	id++;
 	id--;
-	var antrieb = Array(document.getElementById('vbt').value,  document.getElementById('imp').value,  document.getElementById('ha').value);
-	var spd = 0;
+	var technos = Array(document.getElementById('combus').value,  document.getElementById('imp').value,  document.getElementById('hyper').value);
+	var speed = 0;
 
 //-- data2 array --//
-
 	for (i = 0; i < data2.length; i++) {
 		if ((data2[i][0] == id) || (id == -1)) {
-			spd = data2[i][2] * (1 + antrieb[data2[i][1]-1] * data2[i][1] / 10); //normal
+			speed = data2[i][2] * (1 + technos[data2[i][1]-1] * data2[i][1] / 10); //normale
 			if (data2[i][3] != 0) {//-exceptions-
-				if ((data2[i][0] == 201) && (antrieb[1] > 4)) spd = data2[i][3] * (1 + antrieb[1] * 2 / 10); //kt neu
-				if ((data2[i][0] == 211) && (antrieb[2] > 7)) spd = data2[i][3] * (1 + antrieb[2] * 3 / 10); //bomber neu
+				if ((data2[i][0] == 201) && (technos[1] > 4)) speed = data2[i][3] * (1 + technos[1] * 2 / 10); //pt imp
+				if ((data2[i][0] == 211) && (technos[2] > 7)) speed = data2[i][3] * (1 + technos[2] * 3 / 10); //bomb hyp
 				if (data2[i][0] == 208) {
-					if (antrieb[1] > 16) spd = data2[i][3] * (1 + antrieb[1] * 2 / 10); //rec neu imp
-					if (antrieb[2] > 14) spd = data2[i][3] * 1.5 * (1 + antrieb[2] * 3 / 10); //rec neu hyp
+					if (technos[1] > 16) speed = data2[i][3] * (1 + technos[1] * 2 / 10); //rec imp
+					if (technos[2] > 14) speed = data2[i][3] * 1.5 * (1 + technos[2] * 3 / 10); //rec hyp
 				}	
 			}
-			document.getElementById('s' + data2[i][0]).firstChild.nodeValue = pc(Math.round(spd));
+			document.getElementById('s' + data2[i][0]).firstChild.nodeValue = pc(Math.round(speed));
 			document.getElementById('l' + data2[i][0]).firstChild.nodeValue = pc(data2[i][5] * document.getElementById('i' + data2[i][0]).value);
 		}
 	}
@@ -345,51 +334,50 @@ function berechne_table(id) {
 }
 
 function berechne() {
-	var start = Array(document.getElementById('st_gal').value, document.getElementById('st_sys').value, document.getElementById('st_pla').value);
-	var ziel  = Array(document.getElementById('ar_gal').value, document.getElementById('ar_sys').value, document.getElementById('ar_pla').value);
-	var anz   = 0;
-	var enf   = 0;
-	var lag   = 0;
-	var spd   = 110000000000;
-	var time  = 0;
+	var start    = Array(document.getElementById('st_gal').value, document.getElementById('st_sys').value, document.getElementById('st_pla').value);
+	var arrivee  = Array(document.getElementById('ar_gal').value, document.getElementById('ar_sys').value, document.getElementById('ar_pla').value);
+	var nb  = 0;
+	var dist = 0;
+	var fret  = 0;
+	var speed = 110000000000;
+	var time = 0;
 
-	if (start[0] != ziel[0]) {
-		enf = 20000 * Math.abs(start[0] - ziel[0]);
+	if (start[0] != arrivee[0]) {
+		dist = 20000 * Math.abs(start[0] - arrivee[0]);
 	} else {
-		if (start[1] != ziel[1]) {
-			enf = 95 * Math.abs(start[1] - ziel[1]) + 2700;
+		if (start[1] != arrivee[1]) {
+			dist = 95 * Math.abs(start[1] - arrivee[1]) + 2700;
 		} else {
-			if (start[2] != ziel[2]) {
-				enf = 5 * Math.abs(start[2] - ziel[2]) + 1000;
+			if (start[2] != arrivee[2]) {
+				dist = 5 * Math.abs(start[2] - arrivee[2]) + 1000;
 			} else {
-				enf = 5;
+				dist = 5;
 			}
 		}
 	}
 
-	//Berechnung - Anzahl/Lagerkapazit?t
 	for (i = 201; i < 215; i++) {
 		if (i != 210) {
-			if (document.getElementById('i' + i).value > 0) spd = Math.min(spd,retint(document.getElementById('s' + i).firstChild.nodeValue));
-			anz = anz - -1 * document.getElementById('i' + i).value;
-			lag = lag - -1 * retint(document.getElementById('l' + i).firstChild.nodeValue);
+			if (document.getElementById('i' + i).value > 0) speed = Math.min(speed,retint(document.getElementById('s' + i).firstChild.nodeValue));
+			nb = nb - -1 * document.getElementById('i' + i).value;
+			fret = fret - -1 * retint(document.getElementById('l' + i).firstChild.nodeValue);
 		}
 	}
 
-	var time1 = Math.round(time = (10 + (350 / document.getElementById('sel2').value * Math.sqrt(enf*1000/spd))));
+	var time1 = Math.round(time = (10 + (350 / document.getElementById('sel2').value * Math.sqrt(dist*1000/speed))));
 	time = Math.round(time / speeduni);
 
 //selon le depart
 	var cheak;
 	var chaine;
-	var reg=new RegExp("^[0-9]{1,2}/[0-9]{1,2}/{1}[0-9]{4} [0-9]{1,2}:[0-9]{1,2}:[0-9]{1,2}$","g");
+	var reg  = new RegExp("^[0-9]{1,2}/[0-9]{1,2}/{1}[0-9]{4} [0-9]{1,2}:[0-9]{1,2}:[0-9]{1,2}$","g");
 	var reg2 = new RegExp("[ /:]+", "g");
 	chaine = document.getElementById('heure_depart1').value;
 	cheak = reg.test(chaine);
 	if(cheak == true){
 		var time2 = chaine.split(reg2);
 		if( ((time2[0] > 0 && time2[0] < 32)&&(time2[1] > 0 && time2[1] < 13)&&(time2[3] >= 0 && time2[3] < 24)&&((time2[4] >= 0 && time2[4] < 60))&&((time2[5] >= 0 && time2[5] < 60))) == true ){
-			if(anz == 0){
+			if(nb == 0){
 				document.getElementById('heure_arrive1').firstChild.nodeValue = '-';		
 				document.getElementById('heure_retour1').firstChild.nodeValue = '-';
 			}else{
@@ -415,7 +403,7 @@ function berechne() {
 	if(cheak == true){
 		var time3 = chaine.split(reg2);
 		if( ((time3[0] > 0 && time3[0] < 32)&&(time3[1] > 0 && time3[1] < 13)&&(time3[3] >= 0 && time3[3] < 24)&&((time3[4] >= 0 && time3[4] < 60))&&((time3[5] >= 0 && time3[5] < 60))) == true ){
-			if(anz == 0){
+			if(nb == 0){
 				document.getElementById('heure_depart2').firstChild.nodeValue = '-';		
 				document.getElementById('heure_retour2').firstChild.nodeValue = '-';
 			}else{
@@ -441,7 +429,7 @@ function berechne() {
 	if(cheak == true){
 		time4 = chaine.split(reg2);
 		if( ((time4[0] > 0 && time4[0] < 32)&&(time4[1] > 0 && time4[1] < 13)&&(time4[3] >= 0 && time4[3] < 24)&&((time4[4] >= 0 && time4[4] < 60))&&((time4[5] >= 0 && time4[5] < 60))) == true ){
-			if(anz == 0){
+			if(nb == 0){
 				document.getElementById('heure_depart3').firstChild.nodeValue = '-';		
 				document.getElementById('heure_arrive3').firstChild.nodeValue = '-';
 			}else{
@@ -463,36 +451,34 @@ function berechne() {
 	}
 
 	//Berechnung - Treibstoff
-	var verbrauch = 0;
-	var gesverbrauch = 0;
-	var shipspd = 0;
-	var spd2 = 0;
+	var conso = 0;
+	var gesconso = 0;
+	var shipspeed = 0;
+	var speed2 = 0;
 	var num = 0;
 	for (i = 0; i < data2.length; i++) {
 		num = document.getElementById('i'+data2[i][0]).value;
 		if (num != 0) {
-			shipspd = retint(document.getElementById('s'+data2[i][0]).firstChild.nodeValue);
-			spd2 = 35000 / ( time1 - 10 ) * Math.sqrt( enf * 10 / shipspd );
+			shipspeed = retint(document.getElementById('s'+data2[i][0]).firstChild.nodeValue);
+			speed2 = 35000 / ( time1 - 10 ) * Math.sqrt( dist * 10 / shipspeed );
 	      
-			basisverbrauch = data2[i][4];
+			basisconso = data2[i][4];
       
-			if (data2[i][0] == 201 && document.getElementById('imp').value > 4) basisverbrauch = basisverbrauch * 2;
-			if (data2[i][0] == 208 && document.getElementById('ha').value > 14) basisverbrauch = basisverbrauch * 3;
-			else if (data2[i][0] == 208 && document.getElementById('imp').value > 16) basisverbrauch = basisverbrauch * 2;
+			if (data2[i][0] == 201 && document.getElementById('imp').value > 4) basisconso = basisconso * 2;
+			if (data2[i][0] == 208 && document.getElementById('hyper').value > 14) basisconso = basisconso * 3;
+			else if (data2[i][0] == 208 && document.getElementById('imp').value > 16) basisconso = basisconso * 2;
       
-			verbrauch = num * basisverbrauch;
-			gesverbrauch += verbrauch * enf / 35000 * Math.pow(spd2 / 10 + 1 , 2);
+			conso = num * basisconso;
+			gesconso += conso * dist / 35000 * Math.pow(speed2 / 10 + 1 , 2);
 		}
 	}
-
-
-	document.getElementById('verbrauch').innerHTML = (anz == 0) ? '-' : pc(Math.round(gesverbrauch) + 1);
-
-	document.getElementById('iges').firstChild.nodeValue = pc(anz);
-	document.getElementById('lges').innerHTML = soute(lag,Math.round(gesverbrauch));
-	document.getElementById('sges').firstChild.nodeValue = (spd == 110000000000) ? '-' : pc(spd);
-	document.getElementById('distance').firstChild.nodeValue = pc(enf);
-	document.getElementById('dauer').firstChild.nodeValue = (anz == 0) ? '-' : duration(time);
+    
+	document.getElementById('conso').innerHTML = (nb == 0) ? '-' : pc(Math.round(gesconso) + 1);
+	document.getElementById('iges').firstChild.nodeValue = pc(nb);
+	document.getElementById('lges').innerHTML = soute(fret,Math.round(gesconso));
+	document.getElementById('sges').firstChild.nodeValue = (speed == 110000000000) ? '-' : pc(speed);
+	document.getElementById('distance').firstChild.nodeValue = pc(dist);
+	document.getElementById('dauer').firstChild.nodeValue = (nb == 0) ? '-' : duration(time);
 }
 
 function duration(timex) {
@@ -544,23 +530,20 @@ function soute(cargaison,conso){
 	var reste = (cargaison - conso);
 	if (reste >= 0){
 		reste = pc(reste);
-		reste = ' (<font color="lime">'+reste+'</font>)';
+        reste = ' (<span style="color:lime">'+reste+'</span>)';
 	}else{
 		reste = reste + (2 * -(reste));
 		reste = pc(reste);
-		reste = ' (<font color="red">-'+reste+'</font>)';
+        reste = ' (<span style="color:red">'+reste+'</span>)';
 	}
 	cargaison = pc (cargaison);
 	return cargaison+reste;
 }
 </script>
-
 <script type="text/javascript">
  	berechne_table('-1')
-</script> 
-
+</script>
 <br />
-
 <?php
  $filename = "mod/tempsvols/version.txt";
  if (file_exists($filename)){
