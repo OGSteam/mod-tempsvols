@@ -11,7 +11,6 @@ if (!defined('IN_SPYOGAME')) {
     die("Hacking attempt");
 }
 
-global $db, $table_prefix;
 $mod_uninstall_name = "tempsvols";
-uninstall_mod ($mod_uninstall_name, $mod_uninstall_table);
+uninstall_mod($mod_uninstall_name, $mod_uninstall_table);
 ?>

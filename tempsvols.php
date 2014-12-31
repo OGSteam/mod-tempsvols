@@ -4,42 +4,245 @@
 * @author Snipe <santory@websantory.net>
 * @version 0.2d
 *	created		: 07/01/2007
+*   modified    : 31/12/2014 par Pitch314 (Mise en forme HTML avec les normes)
 */
 
-if (!defined('IN_SPYOGAME')) die("Hacking attempt");
+ if (!defined('IN_SPYOGAME')) {
+    die("Hacking attempt");
+ }
 
-require_once("views/page_header.php");
+ require_once("views/page_header.php");
 
-$query = "SELECT `active` FROM `".TABLE_MOD."` WHERE `action`='tempsvols' AND `active`='1' LIMIT 1";
-if (!$db->sql_numrows($db->sql_query($query))) die("Hacking attempt");
-// a modifier
-	$req1 = "SELECT * FROM ".TABLE_USER_TECHNOLOGY." WHERE user_id='".$user_data['user_id']."'";
-	$result1 = $db->sql_query($req1);
-	$fetch1 = $db->sql_fetch_assoc($result1);
-	$pub_RC = $fetch1['RC'];
-	$pub_RI = $fetch1['RI'];
-	$pub_PH = $fetch1['PH'];
+ $query = "SELECT `active` FROM `".TABLE_MOD."` WHERE `action`='tempsvols' AND `active`='1' LIMIT 1";
+ if (!$db->sql_numrows($db->sql_query($query))) {
+    die("Hacking attempt");
+ }
+ 
+ //Recherche des technologies Combustion, Impulsion et Hyperespace du joueur :
+	$query = "SELECT `RC`, `RI`, `PH` FROM ".TABLE_USER_TECHNOLOGY.
+            " WHERE user_id='".$user_data['user_id']."'";
+    $result = $db->sql_query($query);
+    $fetch  = $db->sql_fetch_assoc($result);
+	$pub_RC  = $fetch['RC'];
+	$pub_RI  = $fetch['RI'];
+	$pub_PH  = $fetch['PH'];
 
-	$req2 = "SELECT `planet_name` , `coordinates` FROM ".TABLE_USER_BUILDING." WHERE user_id='".$user_data['user_id']."'";
-	$result2 = $db->sql_query($req2);
+	$query = "SELECT `planet_name`, `coordinates` FROM ".TABLE_USER_BUILDING.
+            " WHERE user_id='".$user_data['user_id']."'";
+	$result = $db->sql_query($query);
 	$option = "<option value='choix'>Choisir une Plan&egrave;te</option>";
-	while($fetch2 = $db->sql_fetch_assoc($result2)){
-		$option .= "<option value='".$fetch2['coordinates']."'>".$fetch2['planet_name']." [".$fetch2['coordinates']."]</option>";
+	while($fetch = $db->sql_fetch_assoc($result)){
+		$option .= "<option value='".$fetch['coordinates']."'>".
+                   $fetch['planet_name']." [".$fetch['coordinates']."]</option>";
 	}
-
 ?>
 
+<div style="margin-bottom:10px; padding-top:1px; font-weight:bold; font-size:150%;">Calculateur de temps de vol</div>
+<table style="border:0px; border-collapse:collapse; border-spacing:0px; padding:0px;">
+ <tr>
+  <td style="width:355px;">
+   <table style="border:0px; border-collapse:separate; border-spacing:1px; padding:1px; text-align:center;">
+    <tr>
+     <th>D&eacute;part</th>
+     <th style="width:225px;">
+      <input id="st_gal" type="text" maxlength="3" value="1" style="width:40px;" onblur="chkval1(this);" onkeyup="chkint(this);berechne();" />
+      <input id="st_sys" type="text" maxlength="4" value="1" style="width:40px;" onblur="chkval1(this);" onkeyup="chkint(this);berechne();" />
+      <input id="st_pla" type="text" maxlength="3" value="1" style="width:40px;" onblur="chkval1(this);" onkeyup="chkint(this);berechne();" /></th>
+    </tr>
+    <tr>
+     <th>Objectif</th>
+     <th>
+      <input id="ar_gal" type="text" maxlength="2" value="1" style="width:40px;" onblur="chkval1(this);" onkeyup="chkint(this);berechne();" />
+      <input id="ar_sys" type="text" maxlength="4" value="1" style="width:40px;" onblur="chkval1(this);" onkeyup="chkint(this);berechne();" />
+      <input id="ar_pla" type="text" maxlength="3" value="1" style="width:40px;" onblur="chkval1(this);" onkeyup="chkint(this);berechne();" />
+      <select id="sel" onchange="berechne()">
+       <option value="planet">Plan&egrave;te</option>
+       <option value="tf">D&eacute;bris</option>
+       <option value="mond">Lune</option>
+      </select></th>
+    </tr>
+    <tr>
+     <th>Vitesse</th>
+     <th><select id="sel2" onchange="berechne()">
+        <option value="1">100%</option>
+        <option value=".9">90%</option>
+        <option value=".8">80%</option>
+        <option value=".7">70%</option>
+        <option value=".6">60%</option>
+        <option value=".5">50%</option>
+        <option value=".4">40%</option>
+        <option value=".3">30%</option>
+        <option value=".2">20%</option>
+        <option value=".1">10%</option>
+     </select></th>
+    </tr>
+    <tr>
+     <th>Distance</th>
+     <th><span id="distance">5</span></th>
+    </tr>
+    <tr>
+     <th>Dur&eacute;e (un trajet)</th>
+     <th><span id="dauer">-</span></th>
+    </tr>
+    <tr>
+     <th>Consommation de carburant</th>
+     <th><span id="verbrauch">-</span></th>
+    </tr>
+   </table>
+  </td>
+  <td style="vertical-align:top;">
+   <table style="border:0px; border-collapse:separate; border-spacing:1px; padding:1px; text-align:center;">
+    <tr>
+     <th>Point de d&eacute;part</th>
+     <th><select id="point_depart" onchange="chgpoint('point_depart');berechne()">
+<?php echo $option?>
+      </select></th>
+    </tr>
+    <tr>
+     <th>Point d&rsquo;arriv&eacute;e</th>
+     <th><select id="point_arrivee" onchange="chgpoint('point_arrivee');berechne()">
+<?php echo $option?>;
+      </select></th>
+    </tr>
+    <tr><td>&nbsp;</td><td></td></tr>
+    <tr>
+     <th style="width:150px;">R&eacute;acteur &agrave; combustion</th>
+     <th>
+      <input id="vbt" maxlength="2" type="text" value="<?PHP echo $pub_RC?>" style="width:75px;" onblur="chkval(this);" onkeyup="chkint(this);berechne_table('-1')"></th>
+    </tr>
+    <tr>
+     <th style="width:150px;">R&eacute;acteur &agrave; impulsion</th>
+     <th>
+      <input id="imp" maxlength="2" type="text" value="<?PHP echo $pub_RI?>" style="width:75px;" onblur="chkval(this);" onkeyup="chkint(this);berechne_table('-1')"></th>
+    </tr>
+    <tr>
+     <th style="width:150px;">Propulsion Hyperespace</th>
+     <th>
+      <input id="ha" maxlength="2" type="text" value="<?PHP echo $pub_PH?>" style="width:75px;" onblur="chkval(this);" onkeyup="chkint(this);berechne_table('-1')"></th>
+    </tr>
+   </table>
+  </td>
+ </tr>
+</table>
+<br />
+<table style="border:0px; border-collapse:separate; border-spacing:1px; padding:1px; text-align:center;">
+ <tr>
+  <th style="width:150px;">Heure de d&eacute;part</th>
+  <th style="width:125px;"><input id="heure_depart1" maxlength="19" type="text" value="<?PHP echo date('d/m/Y H:i:j');?>" onblur="chkval(this);" onkeyup="berechne_table('-1')" /></th>
+  <th style="width:125px;"><span id="heure_depart2">-</span></th>
+  <th style="width:125px;"><span id="heure_depart3">-</span></th>
+ </tr>
+ <tr>
+  <th>Heure d&rsquo;arriv&eacute;e</th>
+   <th><span id="heure_arrive1">-</span></th>
+   <th><input id="heure_arrive2" maxlength="19" type="text" value="<?PHP echo date('d/m/Y H:i:j');?>" onblur="chkval(this);" onkeyup="berechne_table('-1')" /></th>
+   <th><span id="heure_arrive3">-</span></th>
+ </tr>
+ <tr>
+  <th> Heure de retour</th>
+  <th><span id="heure_retour1">-</span></th>
+  <th><span id="heure_retour2">-</span></th>
+  <th><input id="heure_retour3" maxlength="19" type="text" value="<?PHP echo date('d/m/Y H:i:j');?>" onblur="chkval(this);" onkeyup="berechne_table('-1')" /></th>
+ </tr>
+</table>
+<br />
+<table style="border:0px; border-collapse:separate; border-spacing:1px; padding:1px; text-align:center;">
+ <tr class="light">
+  <th style="width:115px;">Vaisseaux</th>
+  <th style="width:115px;">Nombre</th>
+  <th style="width:115px;">Capacit&eacute; de chargement</th>
+  <th style="width:115px;">Vitesse</th>
+ </tr>
+ <tr>
+  <th>Petit transporteur</th>
+  <th><input class="n" id="i201" maxlength="6" type="text" value="0" style="width:75px;" onblur="chkval(this);" onkeyup="chkint(this);berechne_table('201')" /></th>
+  <th><span id="l201">0</span></th>
+  <th><span id="s201">5.000</span></th>
+ </tr>
+ <tr>
+  <th>Grand transporteur</th>
+   <th><input class="n" id="i202" maxlength="6" type="text" value="0" style="width:75px;" onblur="chkval(this);" onkeyup="chkint(this);berechne_table('202')" /></th>
+   <th><span id="l202">0</span></th>
+   <th><span id="s202">7.500</span></th>
+ </tr>
+ <tr>
+  <th>Chasseur l&eacute;ger</th>
+  <th><input class="n" id="i203" maxlength="6" type="text" value="0" style="width:75px;" onblur="chkval(this);" onkeyup="chkint(this);berechne_table('203')" /></th>
+  <th><span id="l203">0</span></th>
+  <th><span id="s203">12.500</span></th>
+ </tr>
+ <tr>
+  <th>Chasseur lourd</th>
+  <th><input class="n" id="i204" maxlength="6" type="text" value="0" style="width:75px;" onblur="chkval(this);" onkeyup="chkint(this);berechne_table('204')" /></th>
+  <th><span id="l204">0</span></th>
+  <th><span id="s204">10.000</span></th>
+ </tr>
+ <tr>
+  <th>Croiseur</th>
+  <th><input class="n" id="i205" maxlength="6" type="text" value="0" style="width:75px;" onblur="chkval(this);" onkeyup="chkint(this);berechne_table('205')" /></th>
+  <th><span id="l205">0</span></th>
+  <th><span id="s205">15.000</span></th>
+ </tr>
+ <tr>
+  <th>Vaisseau de bataille</th>
+  <th><input class="n" id="i206" maxlength="6" type="text" value="0" style="width:75px;" onblur="chkval(this);" onkeyup="chkint(this);berechne_table('206')" /></th>
+  <th><span id="l206">0</span></th>
+  <th><span id="s206">10.000</span></th>
+ </tr>
+ <tr>
+  <th>Vaisseau de colonisation</th>
+  <th><input class="n" id="i207" maxlength="6" type="text" value="0" style="width:75px;" onblur="chkval(this);" onkeyup="chkint(this);berechne_table('207')" /></th>
+  <th><span id="l207">0</span></th>
+  <th><span id="s207">2.500</span></th>
+ </tr>
+ <tr>
+  <th>Recycleur</th>
+  <th><input class="n" id="i208" maxlength="6" type="text" value="0" style="width:75px;" onblur="chkval(this);" onkeyup="chkint(this);berechne_table('208')" /></th>
+  <th><span id="l208">0</span></th>
+  <th><span id="s208">2.000</span></th>
+ </tr>
+ <tr>
+  <th>Sonde espionnage</th>
+  <th><input class="n" id="i209" maxlength="6" type="text" value="0" style="width:75px;" onblur="chkval(this);" onkeyup="chkint(this);berechne_table('209')" /></th>
+  <th><span id="l209">0</span></th>
+  <th><span id="s209">100.000.000</span></th>
+ </tr>
+ <tr>
+  <th>Bombardier</th>
+  <th><input class="n" id="i211" maxlength="6" type="text" value="0" style="width:75px;" onblur="chkval(this);" onkeyup="chkint(this);berechne_table('211')" /></th>
+  <th><span id="l211">0</span></th>
+  <th><span id="s211">4.000</span></th>
+ </tr>
+ <tr>
+  <th>Destructeur</th>
+  <th><input class="n" id="i212" maxlength="6" type="text" value="0" style="width:75px;" onblur="chkval(this);" onkeyup="chkint(this);berechne_table('212')" /></th>
+  <th><span id="l212">0</span></th>
+  <th><span id="s212">5.000</span></th>
+ </tr>
+ <tr>
+  <th>&Eacute;toile de la mort</th>
+  <th><input class="n" id="i213" maxlength="6" type="text" value="0" style="width:75px;" onblur="chkval(this);" onkeyup="chkint(this);berechne_table('213')" /></th>
+  <th><span id="l213">0</span></th>
+  <th><span id="s213">100</span></th>
+ </tr>
+ <tr>
+  <th>Traqueur</th>
+  <th><input class="n" id="i214" maxlength="6" type="text" value="0" style="width:75px;" onblur="chkval(this);" onkeyup="chkint(this);berechne_table('214')" /></th>
+  <th><span id="l214">0</span></th>
+  <th><span id="s214">100</span></th>
+ </tr>
+ <tr class="space"><th colspan="4"></th></tr>
+ <tr>
+  <th>Total</th>
+  <th><span id="iges">0</span></th>
+  <th><span id="lges">0</span></th>
+  <th><span id="sges">-</span></th>
+ </tr>
+ <tr>
+  <th colspan="4"><input type=button value="Effacer tout" onclick="javascript:clearflote()" /></th>
+ </tr>
+</table>
 
-<!-- = = = = = site content = = = = = -->
-<style type="text/css">
-.hr {
-		 width: 100%;
-		 margin-bottom: 10px;
-		 padding-top: 1px;
-		 font-weight: bold;
-}
-
-</style>
 <script type="text/javascript">
 var speeduni = '<?php echo $server_config['speed_uni'];?>';
 var data2 = Array(
@@ -143,7 +346,7 @@ function berechne_table(id) {
 
 function berechne() {
 	var start = Array(document.getElementById('st_gal').value, document.getElementById('st_sys').value, document.getElementById('st_pla').value);
-	var ziel  = Array(document.getElementById('zi_gal').value, document.getElementById('zi_sys').value, document.getElementById('zi_pla').value);
+	var ziel  = Array(document.getElementById('ar_gal').value, document.getElementById('ar_sys').value, document.getElementById('ar_pla').value);
 	var anz   = 0;
 	var enf   = 0;
 	var lag   = 0;
@@ -352,235 +555,6 @@ function soute(cargaison,conso){
 }
 </script>
 
-<div class="hr">Calculateur de temps de vol</div>
-<center><table border="0" cellspacing="0" cellpadding="0" >
-	<tr>
-		<td style="width:355px;">
-			<table border="0" cellspacing="1" cellpadding="1" style="text-align:center;">
-				<tr>
-					<th>D&eacute;part</th>
-
-					<th style="width:225px;"><input id="st_gal" type="text" maxlength="3" value="1" style="width:40px;" onBlur="chkval1(this);" onKeyUp="chkint(this);berechne();"> <input id="st_sys" type="text" maxlength="4" value="1" style="width:40px;" onBlur="chkval1(this);" onKeyUp="chkint(this);berechne();"> <input id="st_pla" type="text" maxlength="3" value="1" style="width:40px;" onBlur="chkval1(this);" onKeyUp="chkint(this);berechne();"></th>
-				</tr>
-				<tr>
-					<th>Objectif</th>
-					<th><input id="zi_gal" type="text" maxlength="2" value="1" style="width:40px;" onBlur="chkval1(this);" onKeyUp="chkint(this);berechne();"> <input id="zi_sys" type="text" maxlength="4" value="1" style="width:40px;" onBlur="chkval1(this);" onKeyUp="chkint(this);berechne();"> <input id="zi_pla" type="text" maxlength="3" value="1" style="width:40px;" onBlur="chkval1(this);" onKeyUp="chkint(this);berechne();">
-						<select id="sel" onChange="berechne()">
-
-							<option value="planet">Plan&egrave;te</option>
-							<option value="tf">D&eacute;bris</option>
-							<option value="mond">Lune</option>
-						</select>
-					</th>
-				</tr>
-
-				<tr>
-					<th>Vitesse</th>
-					<th>
-						<select id="sel2" onChange="berechne()">
-							<option value="1">100%</option>
-							<option value=".9">90%</option>
-							<option value=".8">80%</option>
-
-							<option value=".7">70%</option>
-							<option value=".6">60%</option>
-							<option value=".5">50%</option>
-							<option value=".4">40%</option>
-							<option value=".3">30%</option>
-							<option value=".2">20%</option>
-
-							<option value=".1">10%</option>
-						</select>
-					</th>
-				</tr>
-				<tr>
-					<th>Distance</th>
-					<th><span id="distance">5</span></th>
-
-				</tr>
-				<tr>
-					<th>Dur&eacute;e (un trajet)</th>
-					<th><span id="dauer">-</span></th>
-				</tr>
-				<tr>
-					<th>Consommation de carburant</th>
-
-					<th><span id="verbrauch">-</span></th>
-				</tr>
-			</table>
-		</td>
-		<td style="text-align:center;vertical-align:top;">
-			<table border="0" cellspacing="1" cellpadding="1" style="text-align:center;" >
-				<tr>
-					<th>Point de d&eacute;part</th>
-					<th>
-						<select id="point_depart" onChange="chgpoint('point_depart');berechne()">
-<?php echo $option?>;
-						</select>
-					</th>
-				</tr>
-				<tr>
-					<th>Point d'arrivée</th>
-					<th>
-						<select id="point_arrivee" onChange="chgpoint('point_arrivee');berechne()">
-<?php echo $option?>;
-						</select>				
-				</tr>
-				<tr>
-		 			<td>&nbsp;</td><td></td>
-				</tr>
-				<tr>
-					<th style="width:150px;">R&eacute;acteur &agrave; combustion</th>
-
-					<th style="width:125px;"><input id="vbt" maxlength="2" type="text" value="<?PHP echo $pub_RC?>" style="width:75px;" onBlur="chkval(this);" onKeyUp="chkint(this);berechne_table('-1')"></th>
-				</tr>
-				<tr>
-					<th>R&eacute;acteur &agrave; impulsion</th>
-					<th><input id="imp" maxlength="2" type="text" value="<?PHP echo $pub_RI?>" style="width:75px;" onBlur="chkval(this);" onKeyUp="chkint(this);berechne_table('-1')"></th>
-				</tr>
-				<tr>
-
-					<th>Propulsion Hyperespace</th>
-					<th><input id="ha" maxlength="2" type="text" value="<?PHP echo $pub_PH?>" style="width:75px;" onBlur="chkval(this);" onKeyUp="chkint(this);berechne_table('-1')"></th>
-				</tr>
-			</table>
-		</td>
-	</tr>
-</table></center>
-<br>
-<table border="0" cellspacing="1" cellpadding="1" style="text-align:center;" >
-	<tr>
-		<th style="width:150px;">Heure de d&eacute;part</th>
-		<th style="width:125px;"><input id="heure_depart1" maxlength="19" type="text" value="<?PHP echo date('d/m/Y H:i:j');?>" style="width:125px;" onBlur="chkval(this);" onKeyUp="berechne_table('-1')"></th>
-		<th><span id="heure_depart2">-</span></th>
-		<th><span id="heure_depart3">-</span></th>
-	</tr>
-	<tr>
-		<th>Heure d&rsquo;arriv&eacute;e</th>
-		<th><span id="heure_arrive1">-</span></th>
-		<th style="width:125px;"><input id="heure_arrive2" maxlength="19" type="text" value="<?PHP echo date('d/m/Y H:i:j');?>" style="width:125px;" onBlur="chkval(this);" onKeyUp="berechne_table('-1')"></th>
-		<th><span id="heure_arrive3">-</span></th>
-	</tr>
-	<tr>
-		<th> Heure de retour</th>
-		<th><span id="heure_retour1">-</span></th>
-		<th><span id="heure_retour2">-</span></th>
-		<th style="width:125px;"><input id="heure_retour3" maxlength="19" type="text" value="<?PHP echo date('d/m/Y H:i:j');?>" style="width:125px;" onBlur="chkval(this);" onKeyUp="berechne_table('-1')"></th>
-	</tr>
-</table>
-
-
-<table border="0" cellspacing="1" cellpadding="1" >
-	<tr class="light">
-
-		<th style="width:115px;">Vaisseaux</th>
-		<th>Nombre</th>
-		<th style="width:115px;">Capacit&eacute; de chargement</th>
-		<th style="width:115px;">Vitesse</th>
-	</tr>
-	<tr>
-
-		<th>Petit transporteur</th>
-		<th><input class="n" id="i201" maxlength="6" type="text" value="0" style="width:75px;" onBlur="chkval(this);" onKeyUp="chkint(this);berechne_table('201')"></th>
-		<th><span id="l201">0</span></th>
-		<th><span id="s201">5.000</span></th>
-	</tr>
-	<tr>
-		<th>Grand transporteur</th>
-
-		<th><input class="n" id="i202" maxlength="6" type="text" value="0" style="width:75px;" onBlur="chkval(this);" onKeyUp="chkint(this);berechne_table('202')"></th>
-		<th><span id="l202">0</span></th>
-		<th><span id="s202">7.500</span></th>
-	</tr>
-	<tr>
-		<th>Chasseur l&eacute;ger</th>
-		<th><input class="n" id="i203" maxlength="6" type="text" value="0" style="width:75px;" onBlur="chkval(this);" onKeyUp="chkint(this);berechne_table('203')"></th>
-
-		<th><span id="l203">0</span></th>
-		<th><span id="s203">12.500</span></th>
-	</tr>
-	<tr>
-		<th>Chasseur lourd</th>
-		<th><input class="n" id="i204" maxlength="6" type="text" value="0" style="width:75px;" onBlur="chkval(this);" onKeyUp="chkint(this);berechne_table('204')"></th>
-		<th><span id="l204">0</span></th>
-
-		<th><span id="s204">10.000</span></th>
-	</tr>
-	<tr>
-		<th>Croiseur</th>
-		<th><input class="n" id="i205" maxlength="6" type="text" value="0" style="width:75px;" onBlur="chkval(this);" onKeyUp="chkint(this);berechne_table('205')"></th>
-		<th><span id="l205">0</span></th>
-		<th><span id="s205">15.000</span></th>
-
-	</tr>
-	<tr>
-		<th>Vaisseau de bataille</th>
-		<th><input class="n" id="i206" maxlength="6" type="text" value="0" style="width:75px;" onBlur="chkval(this);" onKeyUp="chkint(this);berechne_table('206')"></th>
-		<th><span id="l206">0</span></th>
-		<th><span id="s206">10.000</span></th>
-	</tr>
-
-	<tr>
-		<th>Vaisseau de colonisation</th>
-		<th><input class="n" id="i207" maxlength="6" type="text" value="0" style="width:75px;" onBlur="chkval(this);" onKeyUp="chkint(this);berechne_table('207')"></th>
-		<th><span id="l207">0</span></th>
-		<th><span id="s207">2.500</span></th>
-	</tr>
-	<tr>
-
-		<th>Recycleur</th>
-		<th><input class="n" id="i208" maxlength="6" type="text" value="0" style="width:75px;" onBlur="chkval(this);" onKeyUp="chkint(this);berechne_table('208')"></th>
-		<th><span id="l208">0</span></th>
-		<th><span id="s208">2.000</span></th>
-	</tr>
-	<tr>
-		<th>Sonde espionnage</th>
-
-		<th><input class="n" id="i209" maxlength="6" type="text" value="0" style="width:75px;" onBlur="chkval(this);" onKeyUp="chkint(this);berechne_table('209')"></th>
-		<th><span id="l209">0</span></th>
-		<th><span id="s209">100.000.000</span></th>
-	</tr>
-	<tr>
-		<th>Bombardier</th>
-		<th><input class="n" id="i211" maxlength="6" type="text" value="0" style="width:75px;" onBlur="chkval(this);" onKeyUp="chkint(this);berechne_table('211')"></th>
-
-		<th><span id="l211">0</span></th>
-		<th><span id="s211">4.000</span></th>
-	</tr>
-	<tr>
-		<th>Destructeur</th>
-		<th><input class="n" id="i212" maxlength="6" type="text" value="0" style="width:75px;" onBlur="chkval(this);" onKeyUp="chkint(this);berechne_table('212')"></th>
-		<th><span id="l212">0</span></th>
-
-		<th><span id="s212">5.000</span></th>
-	</tr>
-	<tr>
-		<th>Etoile de la mort</th>
-		<th><input class="n" id="i213" maxlength="6" type="text" value="0" style="width:75px;" onBlur="chkval(this);" onKeyUp="chkint(this);berechne_table('213')"></th>
-		<th><span id="l213">0</span></th>
-		<th><span id="s213">100</span></th>
-
-	</tr>
-	<tr>
-		<th>Traqueur</th>
-		<th><input class="n" id="i214" maxlength="6" type="text" value="0" style="width:75px;" onBlur="chkval(this);" onKeyUp="chkint(this);berechne_table('214')"></th>
-		<th><span id="l214">0</span></th>
-		<th><span id="s214">100</span></th>
-
-	</tr>
-	<tr class="space"><th colspan="4"></th></tr>
-
-	<tr>
-		<th>Total</th>
-		<th><span id="iges">0</span></th>
-		<th><span id="lges">0</span</th>
-
-		<th><span id="sges">-</span></th>
-	</tr>
-	<tr>
-		<th colspan="4"><INPUT TYPE=BUTTON VALUE="Effacer tout" OnClick="javascript:clearflote()"></th>
-	</tr>
-</table>
 <script type="text/javascript">
  	berechne_table('-1')
 </script> 
@@ -588,13 +562,15 @@ function soute(cargaison,conso){
 <br />
 
 <?php
-if (file_exists('mod/tempsvols/version.txt')) { 
-	$file = file('mod/tempsvols/version.txt'); 
-}
-?>
-Temps de vol <?php echo trim($file[1]) ?><br>
-Créé par Santory d'apres un script de marshen (2005-2006).<br>
-Mise à jour par Shad (2011).</div>
-<?php
-require_once("views/page_tail.php");
+ $filename = "mod/tempsvols/version.txt";
+ if (file_exists($filename)){
+    $file = file($filename);
+    $mod_version = trim($file[1]);
+ } 
+ echo "<div style='text-align:center;font-size:0.8em'>Temps de Vol ".$mod_version."<br />";
+ echo "Cr&eacute;&eacute; par <a>Santory</a> d&rsquo;apr&egrave;s un script de marshen (2005-2006).<br />";
+ echo "Modifi&eacute; par <a>Shad</a> (2011), mise &agrave; jour par <a>Pitch314</a> (2015)<br />";
+ //echo "<font size='1'><a href='http://ogsteam.fr/' target='_blank'>plus d'informations</a>.</font>";
+ echo "</div>";
+ require_once("views/page_tail.php");
 ?>
