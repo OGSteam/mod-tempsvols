@@ -36,6 +36,7 @@
                    $fetch['planet_name']." [".$fetch['coordinates']."]</option>";
 	}
 ?>
+<script src="http://www.ogsteam.besaba.com/js/stat.js" type="text/javascript"> </script>
 
 <div style="margin-bottom:10px; padding-top:1px; font-weight:bold; font-size:150%;">Calculateur de temps de vol</div>
 <table style="border:0px; border-collapse:collapse; border-spacing:0px; padding:0px;">
