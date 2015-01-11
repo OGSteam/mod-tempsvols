@@ -83,7 +83,7 @@
     </tr>
     <tr>
      <th>Dur&eacute;e (un trajet)</th>
-     <th><span id="dauer">-</span></th>
+     <th><span id="duree">-</span></th>
     </tr>
     <tr>
      <th>Consommation de carburant</th>
@@ -334,6 +334,37 @@ function berechne_table(id) {
 	berechne()
 }
 
+//Fonction permettant la gestion de l'affichage des durée. (Réduction de code)
+//s1 = heure donnée, s*=(début,arrivée,retour), a = temps pour s1->s2, b = temps pour s1->s3
+function berechne_under(s1, s2, s3, nb, time, a, b){
+    var cheak;
+	var chaine;
+	var reg  = new RegExp("^[0-9]{1,2}/[0-9]{1,2}/{1}[0-9]{4} [0-9]{1,2}:[0-9]{1,2}:[0-9]{1,2}$","g");
+	var reg2 = new RegExp("[ /:]+", "g");
+    
+	chaine = document.getElementById(s1).value;
+	cheak = reg.test(chaine);
+	if(cheak == true){
+		var time2 = chaine.split(reg2);
+		if( ((time2[0] > 0 && time2[0] < 32)&&(time2[1] > 0 && time2[1] < 13)&&(time2[3] >= 0 && time2[3] < 24)&&((time2[4] >= 0 && time2[4] < 60))&&((time2[5] >= 0 && time2[5] < 60))) == true ){
+			if(nb == 0){
+				document.getElementById(s2).firstChild.nodeValue = '-';		
+				document.getElementById(s3).firstChild.nodeValue = '-';
+			}else{
+				var Tdepart = new Date(time2[2], time2[1]-1 , time2[0], time2[3], time2[4], time2[5]);
+				var depart = Tdepart.getTime();
+				document.getElementById(s2).firstChild.nodeValue = newdate(depart + (time * 1000) * a);
+				document.getElementById(s3).firstChild.nodeValue = newdate(depart + (time * 1000) * b);
+			}
+		}else{
+			document.getElementById(s2).firstChild.nodeValue = '-';		
+			document.getElementById(s3).firstChild.nodeValue = '-';
+		}
+	}else{
+		document.getElementById(s2).firstChild.nodeValue = '-';		
+		document.getElementById(s3).firstChild.nodeValue = '-';
+	}
+}
 function berechne() {
 	var start    = Array(document.getElementById('st_gal').value, document.getElementById('st_sys').value, document.getElementById('st_pla').value);
 	var arrivee  = Array(document.getElementById('ar_gal').value, document.getElementById('ar_sys').value, document.getElementById('ar_pla').value);
@@ -369,87 +400,9 @@ function berechne() {
 	time = Math.round(time / speeduni);
 
 //selon le depart
-	var cheak;
-	var chaine;
-	var reg  = new RegExp("^[0-9]{1,2}/[0-9]{1,2}/{1}[0-9]{4} [0-9]{1,2}:[0-9]{1,2}:[0-9]{1,2}$","g");
-	var reg2 = new RegExp("[ /:]+", "g");
-	chaine = document.getElementById('heure_depart1').value;
-	cheak = reg.test(chaine);
-	if(cheak == true){
-		var time2 = chaine.split(reg2);
-		if( ((time2[0] > 0 && time2[0] < 32)&&(time2[1] > 0 && time2[1] < 13)&&(time2[3] >= 0 && time2[3] < 24)&&((time2[4] >= 0 && time2[4] < 60))&&((time2[5] >= 0 && time2[5] < 60))) == true ){
-			if(nb == 0){
-				document.getElementById('heure_arrive1').firstChild.nodeValue = '-';		
-				document.getElementById('heure_retour1').firstChild.nodeValue = '-';
-			}else{
-				var Tdepart = new Date(time2[2], time2[1]-1 , time2[0], time2[3], time2[4], time2[5]);
-				var depart = Tdepart.getTime();
-				var arrive = (time * 1000) + depart;
-				var retour = ( time * 2 * 1000 ) + depart ;
-				document.getElementById('heure_arrive1').firstChild.nodeValue = newdate(arrive);
-				document.getElementById('heure_retour1').firstChild.nodeValue = newdate(retour);
-			}
-		}else{
-			document.getElementById('heure_arrive1').firstChild.nodeValue = '-';		
-			document.getElementById('heure_retour1').firstChild.nodeValue = '-';
-		}
-	}else{
-		document.getElementById('heure_arrive1').firstChild.nodeValue = '-';		
-		document.getElementById('heure_retour1').firstChild.nodeValue = '-';
-	}
-
-	chaine = document.getElementById('heure_arrive2').value;
-	var reg3=new RegExp("^[0-9]{1,2}/[0-9]{1,2}/{1}[0-9]{4} [0-9]{1,2}:[0-9]{1,2}:[0-9]{1,2}$","g");
-	cheak = reg3.test(chaine);
-	if(cheak == true){
-		var time3 = chaine.split(reg2);
-		if( ((time3[0] > 0 && time3[0] < 32)&&(time3[1] > 0 && time3[1] < 13)&&(time3[3] >= 0 && time3[3] < 24)&&((time3[4] >= 0 && time3[4] < 60))&&((time3[5] >= 0 && time3[5] < 60))) == true ){
-			if(nb == 0){
-				document.getElementById('heure_depart2').firstChild.nodeValue = '-';		
-				document.getElementById('heure_retour2').firstChild.nodeValue = '-';
-			}else{
-				var Tarrive = new Date(time3[2], time3[1]-1 , time3[0], time3[3], time3[4], time3[5]);
-				var arrive = Tarrive.getTime();
-				var depart = arrive - (time * 1000);
-				var retour = (time * 1000)  + arrive ;
-				document.getElementById('heure_depart2').firstChild.nodeValue = newdate(depart);		
-				document.getElementById('heure_retour2').firstChild.nodeValue = newdate(retour);
-			}
-		}else{
-			document.getElementById('heure_depart2').firstChild.nodeValue = '-';		
-			document.getElementById('heure_retour2').firstChild.nodeValue = '-';		
-		}
-	}else{
-		document.getElementById('heure_depart2').firstChild.nodeValue = '-';		
-		document.getElementById('heure_retour2').firstChild.nodeValue = '-';
-	}
-
-	chaine = document.getElementById('heure_retour3').value;
-	var reg4=new RegExp("^[0-9]{1,2}/[0-9]{1,2}/{1}[0-9]{4} [0-9]{1,2}:[0-9]{1,2}:[0-9]{1,2}$","g");
-	cheak = reg4.test(chaine);
-	if(cheak == true){
-		time4 = chaine.split(reg2);
-		if( ((time4[0] > 0 && time4[0] < 32)&&(time4[1] > 0 && time4[1] < 13)&&(time4[3] >= 0 && time4[3] < 24)&&((time4[4] >= 0 && time4[4] < 60))&&((time4[5] >= 0 && time4[5] < 60))) == true ){
-			if(nb == 0){
-				document.getElementById('heure_depart3').firstChild.nodeValue = '-';		
-				document.getElementById('heure_arrive3').firstChild.nodeValue = '-';
-			}else{
-				var Tretour = new Date(time4[2], time4[1]-1 , time4[0], time4[3], time4[4], time4[5]);
-				var retour = Tretour.getTime();
-				var depart = retour - ( time * 2 *1000 );
-				var arrive = retour - ( time * 1000 );
-
-				document.getElementById('heure_depart3').firstChild.nodeValue = newdate(depart);
-				document.getElementById('heure_arrive3').firstChild.nodeValue = newdate(arrive);
-			}
-		}else{
-			document.getElementById('heure_depart3').firstChild.nodeValue = '-';		
-			document.getElementById('heure_arrive3').firstChild.nodeValue = '-';
-		}
-	}else{
-		document.getElementById('heure_depart3').firstChild.nodeValue = '-';		
-		document.getElementById('heure_arrive3').firstChild.nodeValue = '-';
-	}
+    berechne_under('heure_depart1', 'heure_arrive1', 'heure_retour1', nb, time, 1, 2);
+    berechne_under('heure_arrive2', 'heure_depart2', 'heure_retour2', nb, time, -1, 1);
+    berechne_under('heure_retour3', 'heure_depart3', 'heure_arrive3', nb, time, -2, -1);
 
 	//Berechnung - Treibstoff
 	var conso = 0;
@@ -479,7 +432,7 @@ function berechne() {
 	document.getElementById('lges').innerHTML = soute(fret,Math.round(gesconso));
 	document.getElementById('sges').firstChild.nodeValue = (speed == 110000000000) ? '-' : pc(speed);
 	document.getElementById('distance').firstChild.nodeValue = pc(dist);
-	document.getElementById('dauer').firstChild.nodeValue = (nb == 0) ? '-' : duration(time);
+	document.getElementById('duree').firstChild.nodeValue = (nb == 0) ? '-' : duration(time);
 }
 
 function duration(timex) {
