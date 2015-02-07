@@ -125,25 +125,35 @@
   </td>
  </tr>
 </table>
+<table style="border:0px; border-collapse:separate; border-spacing:1px; padding:1px; text-align:center;">
+ <tbody><tr>
+  <th style="width:150px;"><span style="color:red; font-weight:bold; text-decoration:underline;" title="Pour version Ogame >5.8.5   En cours de projet dans la Gameforge
+ distance galaxy entre 1 et 9 = 1G (si arrondi)
+ distance system entre 1 et 499 = 1S (si arrondi)
+ Formule : dist(a,b)=||a-b|-unitMax|  (ou unitMax=499(system), unitMax=9(galaxy)">[BETA !]</span> Univers arrondi</th>
+  <th><input type='checkbox' id='galaxyR' name='galaxyR' onclick="berechne_table('-1')">Galaxies bouclées</input></th>
+  <th><input type='checkbox' id='systemR' name='systemR' onclick="berechne_table('-1')">Systèmes bouclées</input></th>
+  <th><input type='checkbox' id='universR' name='universR' onclick="javascript:verif_donnee();berechne_table('-1')">Univers entièrement bouclé</input></th>
+ </tr></tbody></table>
 <br />
 <table style="border:0px; border-collapse:separate; border-spacing:1px; padding:1px; text-align:center;">
  <tr>
   <th style="width:150px;">Heure de d&eacute;part</th>
-  <th style="width:125px;"><input id="heure_depart1" maxlength="19" type="text" value="<?PHP echo date('d/m/Y H:i:j');?>" onblur="checkVal(this);" onkeyup="berechne_table('-1')" /></th>
+  <th style="width:125px;"><input id="heure_depart1" maxlength="19" type="text" value="<?PHP echo date('d/m/Y H:i:s');?>" onblur="checkVal(this);" onkeyup="berechne_table('-1')" /></th>
   <th style="width:125px;"><span id="heure_depart2">-</span></th>
   <th style="width:125px;"><span id="heure_depart3">-</span></th>
  </tr>
  <tr>
   <th>Heure d&rsquo;arriv&eacute;e</th>
    <th><span id="heure_arrive1">-</span></th>
-   <th><input id="heure_arrive2" maxlength="19" type="text" value="<?PHP echo date('d/m/Y H:i:j');?>" onblur="checkVal(this);" onkeyup="berechne_table('-1')" /></th>
+   <th><input id="heure_arrive2" maxlength="19" type="text" value="<?PHP echo date('d/m/Y H:i:s');?>" onblur="checkVal(this);" onkeyup="berechne_table('-1')" /></th>
    <th><span id="heure_arrive3">-</span></th>
  </tr>
  <tr>
   <th> Heure de retour</th>
   <th><span id="heure_retour1">-</span></th>
   <th><span id="heure_retour2">-</span></th>
-  <th><input id="heure_retour3" maxlength="19" type="text" value="<?PHP echo date('d/m/Y H:i:j');?>" onblur="checkVal(this);" onkeyup="berechne_table('-1')" /></th>
+  <th><input id="heure_retour3" maxlength="19" type="text" value="<?PHP echo date('d/m/Y H:i:s');?>" onblur="checkVal(this);" onkeyup="berechne_table('-1')" /></th>
  </tr>
 </table>
 <br />
@@ -264,6 +274,11 @@ var data2 = Array(
 	Array(214, 3, 10000    , 0    , 250 , 750)      //TR  (Traqueur)
 );
 
+function verif_donnee() {
+    document.getElementById('galaxyR').checked = document.getElementById('universR').checked;
+    document.getElementById('systemR').checked = document.getElementById('universR').checked;
+}
+
 function div(a, b) {
 	return Math.floor(a / b);
 }
@@ -336,7 +351,7 @@ function berechne_table(id) {
 
 //Fonction permettant la gestion de l'affichage des durée. (Réduction de code)
 //s1 = heure donnée, s*=(début,arrivée,retour), a = temps pour s1->s2, b = temps pour s1->s3
-function berechne_under(s1, s2, s3, nb, time, a, b){
+function berechne_under(s1, s2, s3, nb, time, a, b) {
     var cheak;
 	var chaine;
 	var reg  = new RegExp("^[0-9]{1,2}/[0-9]{1,2}/{1}[0-9]{4} [0-9]{1,2}:[0-9]{1,2}:[0-9]{1,2}$","g");
@@ -344,26 +359,44 @@ function berechne_under(s1, s2, s3, nb, time, a, b){
     
 	chaine = document.getElementById(s1).value;
 	cheak = reg.test(chaine);
+    document.getElementById(s2).firstChild.nodeValue = '-';		
+	document.getElementById(s3).firstChild.nodeValue = '-';
 	if(cheak == true){
 		var time2 = chaine.split(reg2);
 		if( ((time2[0] > 0 && time2[0] < 32)&&(time2[1] > 0 && time2[1] < 13)&&(time2[3] >= 0 && time2[3] < 24)&&((time2[4] >= 0 && time2[4] < 60))&&((time2[5] >= 0 && time2[5] < 60))) == true ){
-			if(nb == 0){
-				document.getElementById(s2).firstChild.nodeValue = '-';		
-				document.getElementById(s3).firstChild.nodeValue = '-';
-			}else{
+			if(nb != 0) {
 				var Tdepart = new Date(time2[2], time2[1]-1 , time2[0], time2[3], time2[4], time2[5]);
 				var depart = Tdepart.getTime();
 				document.getElementById(s2).firstChild.nodeValue = newdate(depart + (time * 1000) * a);
 				document.getElementById(s3).firstChild.nodeValue = newdate(depart + (time * 1000) * b);
 			}
-		}else{
-			document.getElementById(s2).firstChild.nodeValue = '-';		
-			document.getElementById(s3).firstChild.nodeValue = '-';
 		}
-	}else{
-		document.getElementById(s2).firstChild.nodeValue = '-';		
-		document.getElementById(s3).firstChild.nodeValue = '-';
 	}
+}
+
+function calc_distance(a, b, type) {//a-b
+    var max_type = 0;
+    var typeArrondi = false;
+    
+    switch(type){
+        case 0: //Galaxy
+            max_type = <?php echo $server_config['num_of_galaxies']; ?>; //9
+            typeArrondi = document.getElementById('galaxyR').checked;
+            break;
+        case 1: //System
+            max_type = <?php echo $server_config['num_of_systems']; ?>; //499
+            typeArrondi = document.getElementById('systemR').checked;
+            break;
+    }
+    if(typeArrondi) {
+        if(Math.abs(a - b) < max_type/2) {
+            return Math.abs(a - b);//|a-b|
+        } else {
+            return Math.abs(Math.abs(a - b) - max_type); //||a-b| - base|
+        }
+    } else {
+        return Math.abs(a - b);//|a-b|
+    }
 }
 function berechne() {
 	var start    = Array(document.getElementById('st_gal').value, document.getElementById('st_sys').value, document.getElementById('st_pla').value);
@@ -375,13 +408,13 @@ function berechne() {
 	var time = 0;
 
 	if (start[0] != arrivee[0]) {
-		dist = 20000 * Math.abs(start[0] - arrivee[0]);
+		dist = 20000 * calc_distance(start[0], arrivee[0], 0);
 	} else {
 		if (start[1] != arrivee[1]) {
-			dist = 95 * Math.abs(start[1] - arrivee[1]) + 2700;
+			dist = 95 * calc_distance(start[1], arrivee[1], 1) + 2700;
 		} else {
 			if (start[2] != arrivee[2]) {
-				dist = 5 * Math.abs(start[2] - arrivee[2]) + 1000;
+				dist = 5 * calc_distance(start[2], arrivee[2], 2) + 1000;
 			} else {
 				dist = 5;
 			}
