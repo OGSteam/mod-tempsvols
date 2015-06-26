@@ -126,7 +126,7 @@
  </tr>
 </table>
 <table style="border:0px; border-collapse:separate; border-spacing:1px; padding:1px; text-align:center;">
- <tbody><tr title="Uniquement dans les univers ayant des vitesses différentes entre la vitesse de production et la vitesse des vaisseaux.">
+ <tbody><tr title="Uniquement dans les univers ayant des vitesses diffÃ©rentes entre la vitesse de production et la vitesse des vaisseaux.">
   <th></th>
    <th style="width:150px;">Vitesse univers vaisseaux</th>
    <th>
@@ -137,9 +137,9 @@
  distance galaxy entre 1 et 9 = 1G (si arrondi)
  distance system entre 1 et 499 = 1S (si arrondi)
  Formule : dist(a,b)=||a-b|-unitMax|  (ou unitMax=499(system), unitMax=9(galaxy)">[BETA !]</span> Univers arrondi</th>
-  <th><input type='checkbox' id='galaxyR' name='galaxyR' onclick="berechne_table('-1')">Galaxies bouclées</input></th>
-  <th><input type='checkbox' id='systemR' name='systemR' onclick="berechne_table('-1')">Systèmes bouclées</input></th>
-  <th><input type='checkbox' id='universR' name='universR' onclick="javascript:verif_donnee();berechne_table('-1')">Univers entièrement bouclé</input></th>
+  <th><input type='checkbox' id='galaxyR' name='galaxyR' onclick="berechne_table('-1')">Galaxies bouclÃ©es</input></th>
+  <th><input type='checkbox' id='systemR' name='systemR' onclick="berechne_table('-1')">SystÃ¨mes bouclÃ©es</input></th>
+  <th><input type='checkbox' id='universR' name='universR' onclick="javascript:verif_donnee();berechne_table('-1')">Univers entiÃ¨rement bouclÃ©</input></th>
  </tr></tbody></table>
 <br />
 <table style="border:0px; border-collapse:separate; border-spacing:1px; padding:1px; text-align:center;">
@@ -266,7 +266,7 @@ var data2 = Array(
 	//    0  , 1, 2        , 3    , 4   , 5   )
 	Array(201, 1, 5000     , 10000, 10  , 5000),    //PT  (Petit transporteur)
 	Array(202, 1, 7500     , 0    , 50  , 25000),   //GT  (Grand transporteur)
-	Array(203, 1, 12500    , 0    , 20  , 50),      //cl  (Chasseur léger)
+	Array(203, 1, 12500    , 0    , 20  , 50),      //cl  (Chasseur lÃ©ger)
 	Array(204, 2, 10000    , 0    , 75  , 100),     //CL  (Chasseur lourd)
 	Array(205, 2, 15000    , 0    , 300 , 800),     //Cr  (Croiseur)
 	Array(206, 3, 10000    , 0    , 500 , 1500),    //VB  (Vaisseau de bataille)
@@ -275,7 +275,7 @@ var data2 = Array(
 	Array(209, 1, 100000000, 0    , 1   , 5),       //Sonde
 	Array(211, 2, 4000     , 5000 , 1000, 500),     //Bom (Bombardier)
 	Array(212, 3, 5000     , 0    , 1000, 2000),    //Des (Destructeur)
-    Array(213, 3, 100      , 0    , 1   , 1000000), //RIP (Étoile de la mort) 
+    Array(213, 3, 100      , 0    , 1   , 1000000), //RIP (Ã‰toile de la mort) 
 	Array(214, 3, 10000    , 0    , 250 , 750)      //TR  (Traqueur)
 );
 
@@ -292,7 +292,7 @@ function mod(a, b) {
 	return a - Math.floor(a / b) * b;
 }
 
-//Convertion nombre pour affichage avec séparateur des milliers
+//Convertion nombre pour affichage avec sÃ©parateur des milliers
 function pc(s) {
 	var sx = '';
 	s = s + '';
@@ -377,8 +377,8 @@ function berechne_table(id) {
 	berechne()
 }
 
-//Fonction permettant la gestion de l'affichage des durée. (Réduction de code)
-//s1 = heure donnée, s*=(début,arrivée,retour), a = temps pour s1->s2, b = temps pour s1->s3
+//Fonction permettant la gestion de l'affichage des durÃ©e. (RÃ©duction de code)
+//s1 = heure donnÃ©e, s*=(dÃ©but,arrivÃ©e,retour), a = temps pour s1->s2, b = temps pour s1->s3
 function berechne_under(s1, s2, s3, nb, time, a, b) {
     var cheak;
 	var chaine;
