@@ -126,7 +126,13 @@
  </tr>
 </table>
 <table style="border:0px; border-collapse:separate; border-spacing:1px; padding:1px; text-align:center;">
- <tbody><tr>
+ <tbody><tr title="Uniquement dans les univers ayant des vitesses différentes entre la vitesse de production et la vitesse des vaisseaux.">
+  <th></th>
+   <th style="width:150px;">Vitesse univers vaisseaux</th>
+   <th>
+    <input id="speeduni" maxlength="4" value="<?php echo $server_config['speed_uni'];?>" style="width:75px;" onblur="checkVal1(this);" onkeyup="checkNum(this);berechne_table('-1')" type="text"></th>
+  </tr>
+  <tr>
   <th style="width:150px;"><span style="color:red; font-weight:bold; text-decoration:underline;" title="Pour version Ogame >5.8.5   En cours de projet dans la Gameforge
  distance galaxy entre 1 et 9 = 1G (si arrondi)
  distance system entre 1 et 499 = 1S (si arrondi)
@@ -255,7 +261,6 @@
 </table>
 
 <script type="text/javascript">
-var speeduni = '<?php echo $server_config['speed_uni'];?>';
 var data2 = Array(
 	//type,techno,v_base   ,speed2,conso, fret)
 	//    0  , 1, 2        , 3    , 4   , 5   )
@@ -310,6 +315,29 @@ function retint(s) {
 	return sxx;
 }
 
+function retnum(s) {
+	var sxx = '';
+	s = s + '';
+	var sx = s.toUpperCase();
+    var decimal = false;
+	for(ir = 0; ir < sx.length; ir++) {
+        if(!decimal && (sx.charAt(ir)==',' || sx.charAt(ir)=='.')){
+            decimal = true;
+            sxx = sxx + '.';
+        } else {
+            if(sx.charCodeAt(ir) >= 48 && sx.charCodeAt(ir) <= 57) {
+                sxx = sxx + sx.charAt(ir);
+            }
+        }
+	}
+	return sxx;
+}
+
+function checkNum(id) {
+	if(id.value != retnum(id.value)) {
+		id.value = retnum(id.value);
+	}
+}
 function checkInt(id) {
 	if(id.value != retint(id.value)) {
 		id.value = retint(id.value);
@@ -430,7 +458,9 @@ function berechne() {
 	}
 
 	var time1 = Math.round(time = (10 + (350 / document.getElementById('sel2').value * Math.sqrt(dist*1000/speed))));
-	time = Math.round(time / speeduni);
+    var speeduni = document.getElementById('speeduni').value;
+    if(speeduni == 0) speeduni = 1;
+    time = Math.round(time / speeduni);
 
 //selon le depart
     berechne_under('heure_depart1', 'heure_arrive1', 'heure_retour1', nb, time, 1, 2);
