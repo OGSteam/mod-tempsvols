@@ -102,7 +102,7 @@
     <tr>
      <th>Point d&rsquo;arriv&eacute;e</th>
      <th><select id="point_arrivee" onchange="chgpoint('point_arrivee');berechne()">
-<?php echo $option?>;
+<?php echo $option?>
       </select></th>
     </tr>
     <tr><td>&nbsp;</td><td></td></tr>
@@ -544,7 +544,7 @@ function chgpoint(lieu){
 			prefix = "st_";
 		}
 		if(lieu == "point_arrivee"){
-			prefix = "zi_";
+			prefix = "ar_";
 		}
 		document.getElementById(prefix + 'gal').value=coordonne[0];
 		document.getElementById(prefix + 'sys').value=coordonne[1];
