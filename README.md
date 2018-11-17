@@ -1,3 +1,6 @@
+
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/f340f5ec0feb40c2b7a6adec341e5335)](https://www.codacy.com/app/darknoon29/mod-tempsvols?utm_source=github.com&utm_medium=referral&utm_content=OGSteam/mod-tempsvols&utm_campaign=badger)
+
 [MOD] Temps de vol - Partie explication
 
 I/ Définition
