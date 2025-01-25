@@ -102,7 +102,7 @@
     <tr>
      <th>Point d&rsquo;arriv&eacute;e</th>
      <th><select id="point_arrivee" onchange="chgpoint('point_arrivee');berechne()">
-<?php echo $option?>
+<?=$option?>
       </select></th>
     </tr>
     <tr><td>&nbsp;</td><td></td></tr>
